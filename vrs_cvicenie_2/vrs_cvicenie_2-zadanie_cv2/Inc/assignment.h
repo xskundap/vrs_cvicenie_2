@@ -37,9 +37,9 @@
 
 /*Reset clock control register macros */
 //RCC base address
-#define	RCC_BASE_ADDR			*((volatile uint32_t *) ((uint32_t)(0x40021000U + 0x00000014U)))
+#define	RCC_BASE_ADDR			(uint32_t)(0x40021000U)
 //AHBEN register
-#define	RCC_AHBENR_REG			*((volatile uint32_t *) (uint32_t)(RCC_BASE_ADDR + 0x00000014U))
+#define	RCC_AHBENR_REG			*((volatile uint32_t *)(RCC_BASE_ADDR + 0x00000014U))
 
 /* LED and button macros */
 #define LED_ON					*((volatile uint32_t *)((uint32_t)(0x48000000 + 0x18U))) |= (1 << 4)   	//GPIOA pin 4
