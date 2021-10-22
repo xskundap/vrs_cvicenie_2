@@ -22,41 +22,6 @@
 #include "main.h"
 #include "assignment.h"
 
-int num_1 = 0, num_0 = 0, before = 0, state = 0, start = 1;
-
-enum EDGE_TYPE edgeDetect(uint8_t pin_state, uint8_t samples){
-      if(pin_state == 1){
-            num_1 = num_1 + 1;
-        num_0 = 0;
-      }
-      else{
-        num_0 = num_0 + 1;
-        num_1 = 0;
-
-    }
-
-    if(start == 1){
-
-        state = 0;
-	start == 0;
-    }
-	
-    if(pin_state == 1 && before == 0){
-
-        state = 1;
-    }
-    else if(pin_state == 0 && before == 1){
-
-        state = 2;
-    }
-
-    before = pin_state;
-
-    return state;
-
-  }
-
-
 int main(void)
 {
   /*
@@ -96,8 +61,8 @@ int main(void)
   //Set mode for pin 4
   GPIOA_MODER_REG &= ~(uint32_t)(0x3 << 8);
   GPIOA_MODER_REG |= (uint32_t)(1 << 8);
-  //Set mode for pin 3
-  GPIOA_MODER_REG &= ~(uint32_t)(0x3 << 10);
+  //Set mode for pin 3 --> v nasom pripade (F302R8) sme tlacidlo pripajali na pin TX (CN3) na zaklade User manual UM1724
+  GPIOA_MODER_REG &= ~(uint32_t)(0x3 << 6);
 
   /*GPIO OTYPER register*/
   GPIOA_OTYPER_REG &= ~(1 << 4);
@@ -108,37 +73,28 @@ int main(void)
 
   /*GPIO PUPDR register, reset*/
   //Set pull up for GPIOA pin 3 (input)
-  GPIOA_PUPDR_REG |= (1 << 10);
+  GPIOA_PUPDR_REG |= (1 << 6);
   //Set no pull for GPIOA pin 4
   GPIOA_PUPDR_REG &= ~(0x3 << 8);
-
-
-  EDGE_TYPE a;
-
-  uint8_t b = 5;
 	
   while (1)
   {
-	  
-	  a = edgeDetect(BUTTON_GET_STATE, b);		//??????????????????
-	  
-	  if(a == 'RISE')
+	  if(BUTTON_GET_STATE)
 	  {
-		  /*// 0.25s delay
-		  LL_mDelay(250);*/
-		  LED_ON;
-		 /* // 0.25s delay
+		  // 0.25s delay
 		  LL_mDelay(250);
-		  LED_OFF;*/
-		  
+		  LED_ON;
+		  // 0.25s delay
+		  LL_mDelay(250);
+		  LED_OFF;
 	  }
-	  else if(a == 'FALL')
+	  else
 	  {
-		  /*// 1s delay
-		  LL_mDelay(1000);*/
-		  /*LED_ON;
 		  // 1s delay
-		  LL_mDelay(1000);*/
+		  LL_mDelay(1000);
+		  LED_ON;
+		  // 1s delay
+		  LL_mDelay(1000);
 		  LED_OFF;
 	  }
   }
