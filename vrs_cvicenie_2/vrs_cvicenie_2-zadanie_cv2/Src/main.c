@@ -48,7 +48,7 @@ int main(void)
   /* Enable clock for GPIO port A*/
 
 	//type your code for GPIOA clock enable here:
-  RCC_BASE_ADDR |= (uint32_t)(1 << 17);
+  RCC_AHBENR_REG |= (uint32_t)(1 << 17);
 
 
   /* GPIOA pin 3 and 4 setup */
